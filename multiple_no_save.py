@@ -4,12 +4,15 @@ import cv2
 import os
 import numpy as np
 import utils
+import time
 
 save_dir = "./db"
 input_fath = "./db/img2.jpg"
-file_path = "./db/multi5.jpg"
+file_path = "./db/multi6.jpg"
 
 margin = 50
+
+start_time = time.time()
 
 faces = RetinaFace.detect_faces(file_path)
 img = cv2.imread(file_path)
@@ -44,6 +47,11 @@ for face in faces.values():
         # img_marked = cv2.rectangle(img_marked, (x1,y1), (x2,y2), (255, 0, 0), 3)
         img_marked[y1:y2, x1:x2] = cv2.blur(img_marked[y1:y2, x1:x2], (30, 30))
 
-    
+compute_time = time.time() - start_time
+fps = 1 / compute_time
+print(f"compute time : {compute_time}")
+print(f"fps : {fps}")
+print(f"src resolution : {img.shape}")
+
 cv2.imshow("result", img_marked)
 cv2.waitKey(0)
